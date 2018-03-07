@@ -249,29 +249,3 @@ void Init(v8::Local<v8::Object> exports) {
 }
 
 NODE_MODULE(module_name, Init);
-
-//int main() {
-//    ClockKeeper keeper;
-//    keeper.tickerThread.detach();
-//    int id;
-//    char code;
-//
-//    while (std::cin >> code >> id) {
-//        switch (code) {
-//            case 'r': {
-//                keeper.refresh(id);
-//            }
-//                break;
-//            case 'a': {
-//                std::cout << "--- \nThis id is " << (keeper.isActive(id) ? "" : "in") << "active" << std::endl;
-//            }
-//                break;
-//
-//            case 'j': {
-//                std::cout << keeper.getActiveListAsJSONArray() << std::endl;
-//            }
-//                break;
-//        }
-//    }
-//    std::cout << "Program Terminated!" << std::endl;
-//}
