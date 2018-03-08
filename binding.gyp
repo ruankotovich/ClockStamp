@@ -5,7 +5,8 @@
       "cflags": [
         "-fexceptions",
         "-std=c++11",
-        "-pthread"
+        "-pthread",
+	"-DDEBUG"
       ],
       "cflags_cc!": [
         "-fno-exceptions"

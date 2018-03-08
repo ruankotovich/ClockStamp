@@ -14,14 +14,20 @@ if (process.platform === "win32" && process.arch === "x64") {
 /*=============== METÓDOS PÚBLICOS DO MÓDULO ==================*/
 
 let ClockStamp = {
-    refresh: (id) => {
-        return clockstamp.refresh(id);
+    refresh: (node, clock) => {
+        return clockstamp.refresh(node, clock);
     },
     getActives: () => {
         return clockstamp.getActives();
     },
     isActive: (id) => {
-        return clockstamp.refresh(id);
+        return clockstamp.isActive(id);
+    },
+    getActivesOnNode: (node) => {
+        return clockstamp.getActivesOnNode(node);
+    },
+    isActiveOnNode: (node) => {
+        return clockstamp.isActiveOnNode(node);
     }
 };
 
@@ -35,7 +41,19 @@ stdin.addListener("data", function (d) {
         if (res === 'a') {
             console.log(ClockStamp.getActives());
         } else {
-            ClockStamp.refresh(Number(res));
+            let pos = res.split(' ');
+            switch (pos[0]) {
+                case 'r': {
+                    console.log('Refreshing ', pos[2], ' on node ', pos[1]);
+                    ClockStamp.refresh(Number(pos[1]), Number(pos[2]));
+                }
+                    break;
+                case 's': {
+                    console.log(ClockStamp.getActivesOnNode(Number(pos[1])));
+                }
+                    break;
+            }
+
         }
     }
 });
