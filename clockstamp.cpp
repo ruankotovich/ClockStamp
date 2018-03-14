@@ -10,14 +10,19 @@
 namespace Chronomancer {
 
     struct MasterNodeKeeper {
+        std::mutex m_masterclockstamp;
         std::map<unsigned, int> activeNodes;
 
         void notifyAdded(unsigned id) {
+            m_masterclockstamp.lock();
             ++activeNodes[id];
+            m_masterclockstamp.unlock();
         }
 
         void notifyEroded(unsigned id) {
+            m_masterclockstamp.lock();
             --activeNodes[id];
+            m_masterclockstamp.unlock();
         }
 
         bool isActive(unsigned id) {
@@ -33,8 +38,10 @@ namespace Chronomancer {
             for (auto &el : activeNodes) {
                 if (el.second > 0) {
                     openOp.push_back(el.first);
+                    std::cout << el.second << ',';
                 }
             }
+            std::cout << std::endl;
             return std::move(openOp);
         }
     };
@@ -162,8 +169,11 @@ namespace Chronomancer {
                         this->refreshAll(); // update everything
                     }
                 } else {
-                    if (this->clocks.emplace(id, STAMP + this->timeInterval()).second) {
+                    auto emplaced = this->clocks.emplace(id, STAMP + this->timeInterval());
+                    if (emplaced.second) {
                         this->masterClock->notifyAdded(id);
+                    } else {
+                        emplaced.first->second = STAMP + this->timeInterval();
                     }
                 }
 
@@ -248,10 +258,12 @@ void getActives(const v8::FunctionCallbackInfo<v8::Value> &args) {
         v8::Local<v8::Array> nodes = v8::Array::New(isolate);
 
         int count = 0;
+
         for (auto &id : master.getActives()) {
             nodes->Set(count, v8::Integer::New(isolate, id));
             ++count;
         }
+
         args.GetReturnValue().Set(nodes);
 
     } catch (const char *err) {

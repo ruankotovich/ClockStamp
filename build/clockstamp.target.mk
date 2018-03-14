@@ -25,7 +25,6 @@ CFLAGS_Debug := \
 	-fexceptions \
 	-std=c++11 \
 	-pthread \
-	-DDEBUG \
 	-g \
 	-O0
 
@@ -63,7 +62,6 @@ CFLAGS_Release := \
 	-fexceptions \
 	-std=c++11 \
 	-pthread \
-	-DDEBUG \
 	-O3 \
 	-fno-omit-frame-pointer
 

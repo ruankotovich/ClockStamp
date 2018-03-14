@@ -32,28 +32,3 @@ let ClockStamp = {
 };
 
 module.exports.ClockStamp = ClockStamp;
-
-let stdin = process.openStdin();
-
-stdin.addListener("data", function (d) {
-    let res = d.toString().trim();
-    if (res) {
-        if (res === 'a') {
-            console.log(ClockStamp.getActives());
-        } else {
-            let pos = res.split(' ');
-            switch (pos[0]) {
-                case 'r': {
-                    console.log('Refreshing ', pos[2], ' on node ', pos[1]);
-                    ClockStamp.refresh(Number(pos[1]), Number(pos[2]));
-                }
-                    break;
-                case 's': {
-                    console.log(ClockStamp.getActivesOnNode(Number(pos[1])));
-                }
-                    break;
-            }
-
-        }
-    }
-});
